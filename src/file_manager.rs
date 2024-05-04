@@ -5,6 +5,7 @@ pub struct FileManager {
   path: String,
   rows: Vec<Vec<String>>,
 }
+
 impl FileManager {
   pub fn new(path: &str) -> Self {
     Self {

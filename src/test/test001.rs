@@ -87,19 +87,6 @@ pub fn _test003() -> std::io::Result<()> {
   Ok(())
 }
 
-pub fn _test004(args: &[String]) {
-  let argn = args.len();
-  println!("argn = {}", argn);
-  for (i, arg) in args.iter().enumerate() {
-    if i == argn - 1 {
-      print!("{}", *arg);
-    } else {
-      print!("{}|", *arg);
-    }
-  }
-  println!();
-}
-
 pub fn _test005() {
   let args: Vec<String> = env::args().collect();
   let argn = args.len();

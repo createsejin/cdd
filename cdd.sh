@@ -1,1 +1,1 @@
-echo $(cddr -cd "$1")
+echo -e "$(cddr -cd $1 $2 $3)"

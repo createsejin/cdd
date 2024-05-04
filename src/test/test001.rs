@@ -1,3 +1,4 @@
+use std::env;
 use std::fs::File;
 use std::io::{self, BufRead, Write};
 use std::process::Command;
@@ -67,6 +68,7 @@ pub fn _test003() -> std::io::Result<()> {
 
   // test print lines
   for args in lines {
+    print!("len={}|", args.len());
     for (i, arg) in args.iter().enumerate() {
       // if i is the last index of args
       if i == args.len() - 1 {
@@ -86,6 +88,20 @@ pub fn _test003() -> std::io::Result<()> {
 }
 
 pub fn _test004(args: &[String]) {
+  let argn = args.len();
+  println!("argn = {}", argn);
+  for (i, arg) in args.iter().enumerate() {
+    if i == argn - 1 {
+      print!("{}", *arg);
+    } else {
+      print!("{}|", *arg);
+    }
+  }
+  println!();
+}
+
+pub fn _test005() {
+  let args: Vec<String> = env::args().collect();
   let argn = args.len();
   println!("argn = {}", argn);
   for (i, arg) in args.iter().enumerate() {

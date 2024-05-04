@@ -1,8 +1,9 @@
 mod test;
 
-use std::env;
-
 fn main() {
-  let args: Vec<String> = env::args().collect();
-  test::test001::_test004(&args);
+  // argments collection
+  // let args: Vec<String> = env::args().collect();
+  // test::test001::_test004(&args);
+  test::test001::_test005();
+  test::test001::_test003().unwrap();
 }

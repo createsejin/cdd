@@ -20,6 +20,12 @@ impl ArgmentPaser {
     self._args_test_print();
   }
 
+  pub fn parse_argment(&self) {
+    if self.args[1] == String::from("-cd") {
+      println!("first='-cd', argn={}", self.argn);
+    }
+  }
+
   fn _args_test_print(&self) {
     println!("argn = {}", self.argn);
     for (i, arg) in self.args.iter().enumerate() {
@@ -40,4 +46,5 @@ pub fn initialize() {
 
   let mut argment_parser = ArgmentPaser::new();
   argment_parser.collect_args();
+  argment_parser.parse_argment();
 }

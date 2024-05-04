@@ -4,4 +4,6 @@ se|~/se
 sc|.|~/Documents/scripts/.scripts
 sc.|~/Documents/scripts/.scripts
 sc|~/Documents/scripts
+sc|a|~/Documents/android/scripts
+sc|a.|~/Documents/android/scripts/.scripts
 d|~/Documents

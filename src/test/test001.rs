@@ -100,3 +100,48 @@ pub fn _test005() {
   }
   println!();
 }
+
+#[test]
+pub fn _test007() -> io::Result<()> {
+  let file = File::open("cdd_data.txt").expect("file not found \u{25A1}");
+  let reader = io::BufReader::new(file);
+
+  let mut rows: Vec<(u8, String, String, String, String)> = Vec::new();
+  for line in reader.lines() {
+    let line_str = line.unwrap();
+    let args_str: Vec<&str> = line_str.split('|').collect();
+    let argn = args_str.len() as u8;
+    println!("argn={}", argn);
+    assert!(argn >= 2, "not enough arguments!");
+    let arg1 = args_str[0].to_string();
+    let arg2 = args_str[1].to_string();
+    let arg3 = if argn >= 3 {
+      args_str[2].to_string()
+    } else {
+      String::from("")
+    };
+    let arg4 = if argn >= 4 {
+      args_str[3].to_string()
+    } else {
+      String::from("")
+    };
+    assert!(argn < 5, "too many arguments!");
+    let row = (argn, arg1, arg2, arg3, arg4);
+    rows.push(row);
+  }
+
+  for row in &rows {
+    let (num, arg1, arg2, arg3, arg4) = row;
+    let mut row_str = format!("{num}|{arg1}|{arg2}");
+    if *num >= 3 {
+      row_str.push('|');
+      row_str.push_str(arg3);
+    }
+    if *num >= 4 {
+      row_str.push('|');
+      row_str.push_str(arg4);
+    }
+  }
+
+  Ok(())
+}

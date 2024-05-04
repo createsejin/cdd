@@ -1,5 +1,8 @@
 mod test;
 
+use std::env;
+
 fn main() {
-  test::test001::_test003().unwrap();
+  let args: Vec<String> = env::args().collect();
+  test::test001::_test004(&args);
 }

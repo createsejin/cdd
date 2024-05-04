@@ -1,5 +1,5 @@
 mod test;
 
 fn main() {
-  test::test001::_test002();
+  test::test001::_test003().unwrap();
 }

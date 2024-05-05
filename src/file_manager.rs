@@ -35,7 +35,10 @@ impl FileManager {
       } else {
         String::from("")
       };
-      assert!(argn < 5, "too many arguments!");
+      assert!(
+        argn < 5,
+        "too many arguments! sub_cmd count should be 1 to 3."
+      );
       let row = (argn, arg1, arg2, arg3, arg4);
       self.rows.push(row);
     }

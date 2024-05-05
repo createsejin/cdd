@@ -101,9 +101,9 @@ pub fn _test005() {
   println!();
 }
 
-#[test]
-pub fn _test007() -> io::Result<()> {
-  let file = File::open("cdd_data.txt").expect("file not found \u{25A1}");
+#[allow(dead_code)]
+fn read_cdd_data(path: &str) -> Vec<(u8, String, String, String, String)> {
+  let file = File::open(path.to_string()).expect("file not found \u{25A1}");
   let reader = io::BufReader::new(file);
 
   let mut rows: Vec<(u8, String, String, String, String)> = Vec::new();
@@ -111,7 +111,6 @@ pub fn _test007() -> io::Result<()> {
     let line_str = line.unwrap();
     let args_str: Vec<&str> = line_str.split('|').collect();
     let argn = args_str.len() as u8;
-    println!("argn={}", argn);
     assert!(argn >= 2, "not enough arguments!");
     let arg1 = args_str[0].to_string();
     let arg2 = args_str[1].to_string();
@@ -129,8 +128,12 @@ pub fn _test007() -> io::Result<()> {
     let row = (argn, arg1, arg2, arg3, arg4);
     rows.push(row);
   }
+  rows
+}
 
-  for row in &rows {
+#[allow(dead_code)]
+fn print_rows(rows: &[(u8, String, String, String, String)]) {
+  for row in rows {
     let (num, arg1, arg2, arg3, arg4) = row;
     let mut row_str = format!("{num}|{arg1}|{arg2}");
     if *num >= 3 {
@@ -141,7 +144,13 @@ pub fn _test007() -> io::Result<()> {
       row_str.push('|');
       row_str.push_str(arg4);
     }
+    println!("{row_str}");
   }
+}
 
+#[test]
+pub fn _test007() -> io::Result<()> {
+  let rows = read_cdd_data("cdd_data.txt");
+  print_rows(&rows);
   Ok(())
 }

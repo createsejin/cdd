@@ -3,7 +3,7 @@ use std::io::{self, BufRead};
 
 pub struct FileManager {
   path: String,
-  rows: Vec<Vec<String>>,
+  rows: Vec<(u8, String, String, String, String)>,
 }
 
 impl FileManager {
@@ -21,27 +21,50 @@ impl FileManager {
     for line in reader.lines() {
       let line_str = line.unwrap();
       let args_str: Vec<&str> = line_str.split('|').collect();
-      let args_string: Vec<String> = args_str.iter().map(|x| x.to_string()).collect();
-      self.rows.push(args_string);
+      let argn = args_str.len() as u8;
+      assert!(argn >= 2, "not enough arguments!");
+      let arg1 = args_str[0].to_string();
+      let arg2 = args_str[1].to_string();
+      let arg3 = if argn >= 3 {
+        args_str[2].to_string()
+      } else {
+        String::from("")
+      };
+      let arg4 = if argn >= 4 {
+        args_str[3].to_string()
+      } else {
+        String::from("")
+      };
+      assert!(argn < 5, "too many arguments!");
+      let row = (argn, arg1, arg2, arg3, arg4);
+      self.rows.push(row);
     }
     Ok(())
   }
 
+  #[allow(dead_code)]
   pub fn print_rows(&self) {
-    for args in &self.rows {
-      print!("len={}|", args.len());
-      for (i, arg) in args.iter().enumerate() {
-        if i == args.len() - 1 {
-          print!("{}", *arg);
-        } else {
-          print!("{}|", *arg);
-        }
+    for row in &self.rows {
+      let (num, arg1, arg2, arg3, arg4) = &row;
+      let mut row_str = format!("{num}|{arg1}|{arg2}");
+      if *num >= 3 {
+        row_str.push('|');
+        row_str.push_str(arg3);
       }
-      println!();
+      if *num >= 4 {
+        row_str.push('|');
+        row_str.push_str(arg4);
+      }
+      println!("{row_str}");
     }
+  }
+
+  pub fn get_rows(&self) -> &[(u8, String, String, String, String)] {
+    &self.rows
   }
 }
 
+#[test]
 pub fn _test006() {
   let mut file_manager = FileManager {
     path: String::from("cdd_data.txt"),

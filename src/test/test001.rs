@@ -149,7 +149,7 @@ fn print_rows(rows: &[(u8, String, String, String, String)]) {
 }
 
 #[test]
-pub fn _test007() -> io::Result<()> {
+fn _test007() -> io::Result<()> {
   let rows = read_cdd_data("cdd_data.txt");
   print_rows(&rows);
   Ok(())

@@ -212,3 +212,69 @@ fn _test007() {
   let rows = read_cdd_data("cdd_data.txt");
   detact_ded_row(&rows);
 }
+
+fn _remove_argn(
+  rows: &[(u8, String, String, String, String)],
+) -> Vec<(String, String, String, String)> {
+  let mut argn_removed_rows: Vec<(String, String, String, String)> = Vec::new();
+  for row in rows {
+    let argn_removed_row = (row.1.clone(), row.2.clone(), row.3.clone(), row.4.clone());
+    argn_removed_rows.push(argn_removed_row);
+  }
+  argn_removed_rows.sort();
+  argn_removed_rows
+}
+
+fn _print_argn_removed_rows(argn_removed_rows: &[(String, String, String, String)]) {
+  for row in argn_removed_rows {
+    let row_str = _format_row_argn_removed(row);
+    println!("{row_str}");
+  }
+}
+
+fn _format_row_argn_removed(row: &(String, String, String, String)) -> String {
+  let (arg1, arg2, arg3, arg4) = row;
+  let mut row_str = format!("{arg1}|{arg2}");
+  let mut count = 0;
+  if *arg3 == String::from("") {
+    count += 1;
+  }
+  if *arg4 == String::from("") {
+    count += 1;
+  }
+  if count <= 1 {
+    row_str.push('|');
+    row_str.push_str(arg3);
+  }
+  if count == 0 {
+    row_str.push('|');
+    row_str.push_str(arg4);
+  }
+  row_str
+}
+
+fn _remove_argn_str(rows: &[(u8, String, String, String, String)]) -> Vec<String> {
+  let argn_removed_rows = _remove_argn(&rows);
+  let mut argn_removed_rows_str: Vec<String> = Vec::new();
+  for row in &argn_removed_rows {
+    let row_str = _format_row_argn_removed(row);
+    argn_removed_rows_str.push(row_str);
+  }
+  argn_removed_rows_str.sort();
+  argn_removed_rows_str
+}
+
+#[test]
+fn _test008() {
+  let rows = read_cdd_data("cdd_data.txt");
+  print_rows(&rows);
+  let argn_removed_rows = _remove_argn(&rows);
+  println!("\nargn_removed_rows:");
+  _print_argn_removed_rows(&argn_removed_rows);
+
+  let argn_removed_rows_str = _remove_argn_str(&rows);
+  println!("\nargn_removed_rows_str:");
+  for row in &argn_removed_rows_str {
+    println!("{row}");
+  }
+}

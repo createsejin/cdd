@@ -109,6 +109,7 @@ fn read_cdd_data(path: &str) -> Vec<(u8, String, String, String, String)> {
   let mut rows: Vec<(u8, String, String, String, String)> = Vec::new();
   for line in reader.lines() {
     let line_str = line.unwrap();
+    // split and collect args in data
     let args_str: Vec<&str> = line_str.split('|').collect();
     let argn = args_str.len() as u8;
     assert!(argn >= 2, "not enough arguments!");
@@ -128,7 +129,25 @@ fn read_cdd_data(path: &str) -> Vec<(u8, String, String, String, String)> {
     let row = (argn, arg1, arg2, arg3, arg4);
     rows.push(row);
   }
-  rows.sort();
+  // sort order: arg1, argn, arg2, arg3
+  rows.sort_by(|a, b| {
+    let arg1_cmp = a.1.cmp(&b.1);
+    if arg1_cmp == std::cmp::Ordering::Equal {
+      let argn_cmp = a.0.cmp(&b.0);
+      if argn_cmp == std::cmp::Ordering::Equal {
+        let arg2_cmp = a.2.cmp(&b.2);
+        if arg2_cmp == std::cmp::Ordering::Equal {
+          a.3.cmp(&b.3) // fourth
+        } else {
+          arg2_cmp // third
+        }
+      } else {
+        argn_cmp // second
+      }
+    } else {
+      arg1_cmp // first
+    }
+  });
   rows
 }
 
@@ -184,7 +203,7 @@ fn detact_ded_row(rows: &[(u8, String, String, String, String)]) {
   let mut deduped_rows = dir_removed_rows.clone();
   deduped_rows.dedup();
   println!("\ndeduped: ");
-  print_rows(&dir_removed_rows);
+  print_rows(&deduped_rows);
   println!();
   // collection of duplicate_row
   let mut duplicate_row: Vec<(u8, String, String, String, String)> = Vec::new();
@@ -268,6 +287,7 @@ fn _remove_argn_str(rows: &[(u8, String, String, String, String)]) -> Vec<String
 fn _test008() {
   let rows = read_cdd_data("cdd_data.txt");
   print_rows(&rows);
+
   let argn_removed_rows = _remove_argn(&rows);
   println!("\nargn_removed_rows:");
   _print_argn_removed_rows(&argn_removed_rows);
@@ -277,4 +297,10 @@ fn _test008() {
   for row in &argn_removed_rows_str {
     println!("{row}");
   }
+}
+
+#[test]
+fn _test009() {
+  let rows = read_cdd_data("cdd_data.txt");
+  print_rows(&rows);
 }

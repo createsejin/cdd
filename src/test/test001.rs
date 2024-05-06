@@ -128,29 +128,62 @@ fn read_cdd_data(path: &str) -> Vec<(u8, String, String, String, String)> {
     let row = (argn, arg1, arg2, arg3, arg4);
     rows.push(row);
   }
+  rows.sort();
   rows
 }
 
 #[allow(dead_code)]
 fn print_rows(rows: &[(u8, String, String, String, String)]) {
   for row in rows {
-    let (num, arg1, arg2, arg3, arg4) = row;
-    let mut row_str = format!("{num}|{arg1}|{arg2}");
-    if *num >= 3 {
-      row_str.push('|');
-      row_str.push_str(arg3);
-    }
-    if *num >= 4 {
-      row_str.push('|');
-      row_str.push_str(arg4);
-    }
+    let row_str = _format_row(row);
     println!("{row_str}");
   }
 }
 
+fn _format_row(row: &(u8, String, String, String, String)) -> String {
+  let (num, arg1, arg2, arg3, arg4) = row;
+  let mut row_str = format!("{num}|{arg1}|{arg2}");
+  if *num >= 3 {
+    row_str.push('|');
+    row_str.push_str(arg3);
+  }
+  if *num >= 4 {
+    row_str.push('|');
+    row_str.push_str(arg4);
+  }
+  row_str
+}
+
+fn _remove_dir(
+  rows: &[(u8, String, String, String, String)],
+) -> Vec<(u8, String, String, String, String)> {
+  let mut dir_removed_rows: Vec<(u8, String, String, String, String)> = Vec::new();
+  for row in rows {
+    let mut cloned_row = row.clone();
+    let argn = cloned_row.0;
+    match argn {
+      2 => cloned_row.2 = String::from(""),
+      3 => cloned_row.3 = String::from(""),
+      4 => cloned_row.4 = String::from(""),
+      _ => (),
+    }
+    dir_removed_rows.push(cloned_row);
+  }
+  dir_removed_rows
+}
+
+#[allow(dead_code)]
+fn detact_ded_row(rows: &[(u8, String, String, String, String)]) {
+  let dir_removed_rows = _remove_dir(rows);
+  print_rows(&dir_removed_rows);
+  let mut deduped_rows = dir_removed_rows.clone();
+  deduped_rows.dedup();
+  println!("\ndeduped: ");
+  print_rows(&dir_removed_rows);
+}
+
 #[test]
-fn _test007() -> io::Result<()> {
+fn _test007() {
   let rows = read_cdd_data("cdd_data.txt");
-  print_rows(&rows);
-  Ok(())
+  detact_ded_row(&rows);
 }

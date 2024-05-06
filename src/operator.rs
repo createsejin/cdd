@@ -24,32 +24,36 @@ impl<'a> ArgmentPaser<'a> {
   pub fn collect_args(&mut self) {
     self.args = env::args().collect();
     self.argn = self.args.len() as u8;
-    self._args_test_print();
+    // self._args_test_print();
   }
 
   pub fn parse_argment(&mut self) {
     if self.args[1] == String::from("-a") {
       println!("first='-a', argn={}", self.argn);
+    } else if self.args[1] == String::from("-cd") {
+      self.loop_rows();
     }
-    self.loop_rows();
   }
 
   fn loop_rows(&mut self) {
     for row in self.rows {
-      if row.0 == self.argn as u8 {
+      if row.0 == (self.argn - 1) as u8 {
         match self.argn {
-          2 => {
-            if self.args[1] == row.1 {
+          3 => {
+            // cddr -cd se => argn=3
+            if self.args[2] == row.1 {
               self.dir.push(row.2.clone());
             }
           }
-          3 => {
-            if self.args[1] == row.1 && self.args[2] == row.2 {
+          4 => {
+            // cddr -cd se . => argn=4
+            if self.args[2] == row.1 && self.args[3] == row.2 {
               self.dir.push(row.3.clone());
             }
           }
-          4 => {
-            if self.args[1] == row.1 && self.args[2] == row.2 && self.args[3] == row.3 {
+          5 => {
+            // cddr -cd se . a => argn=5
+            if self.args[2] == row.1 && self.args[3] == row.2 && self.args[4] == row.3 {
               self.dir.push(row.4.clone());
             }
           }
@@ -72,26 +76,6 @@ impl<'a> ArgmentPaser<'a> {
       }
     }
     println!();
-  }
-
-  fn _print_row_string(row: &(u8, String, String, String, String)) {
-    let (num, arg1, arg2, arg3, arg4) = row;
-    let mut row_str = format!("{num}|{arg1}|{arg2}");
-    if *num >= 3 {
-      row_str.push('|');
-      row_str.push_str(arg3);
-    }
-    if *num >= 4 {
-      row_str.push('|');
-      row_str.push_str(arg4);
-    }
-    println!("{row_str}");
-  }
-
-  pub fn _rows_test_print(&self) {
-    for row in self.rows {
-      Self::_print_row_string(row);
-    }
   }
 }
 

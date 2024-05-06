@@ -195,14 +195,16 @@ fn _remove_dir(
 }
 
 #[allow(dead_code)]
-fn detact_ded_row(rows: &[(u8, String, String, String, String)]) {
+fn detact_ded_row(
+  rows: &[(u8, String, String, String, String)],
+) -> Vec<(u8, String, String, String, String)> {
   // dir is removed to compare duplicated rows
   let mut dir_removed_rows = _remove_dir(rows);
   print_rows(&dir_removed_rows);
   // clone dir_removed_rows and make it deduped_rows
   let mut deduped_rows = dir_removed_rows.clone();
   deduped_rows.dedup();
-  println!("\ndeduped: ");
+  println!("\ndeduped:");
   print_rows(&deduped_rows);
   println!();
   // collection of duplicate_row
@@ -221,15 +223,15 @@ fn detact_ded_row(rows: &[(u8, String, String, String, String)]) {
       dir_removed_rows.remove(0);
     } // by this method, we can compare same elements of both rows
   }
-
-  println!("duplicate_row:");
-  print_rows(&duplicate_row);
+  duplicate_row
 }
 
 #[test]
 fn _test007() {
   let rows = read_cdd_data("cdd_data.txt");
-  detact_ded_row(&rows);
+  let duplicate_row = detact_ded_row(&rows);
+  println!("duplicate_row:");
+  print_rows(&duplicate_row);
 }
 
 fn _remove_argn(

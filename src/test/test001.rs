@@ -133,7 +133,10 @@ fn read_cdd_data(path: &str) -> Vec<(u8, String, String, String, String)> {
 }
 
 #[allow(dead_code)]
-fn print_rows(rows: &[(u8, String, String, String, String)]) {
+fn print_rows<'a, T>(rows: &'a T)
+where
+  &'a T: IntoIterator<Item = &'a (u8, String, String, String, String)>,
+{
   for row in rows {
     let row_str = _format_row(row);
     println!("{row_str}");
@@ -180,6 +183,18 @@ fn detact_ded_row(rows: &[(u8, String, String, String, String)]) {
   deduped_rows.dedup();
   println!("\ndeduped: ");
   print_rows(&dir_removed_rows);
+  println!();
+  let mut duplicate_row: Vec<(u8, String, String, String, String)> = Vec::new();
+  for (i, row) in deduped_rows.iter().enumerate() {
+    if dir_removed_rows[i] != *row {
+      println!("diff_index={i}");
+      duplicate_row.push(deduped_rows[i - 1].clone());
+      break;
+    } else {
+    }
+  }
+  println!("\nduplicate_row:");
+  print_rows(&duplicate_row);
 }
 
 #[test]

@@ -177,23 +177,33 @@ fn _remove_dir(
 
 #[allow(dead_code)]
 fn detact_ded_row(rows: &[(u8, String, String, String, String)]) {
-  let dir_removed_rows = _remove_dir(rows);
+  // dir is removed to compare duplicated rows
+  let mut dir_removed_rows = _remove_dir(rows);
   print_rows(&dir_removed_rows);
+  // clone dir_removed_rows and make it deduped_rows
   let mut deduped_rows = dir_removed_rows.clone();
   deduped_rows.dedup();
   println!("\ndeduped: ");
   print_rows(&dir_removed_rows);
   println!();
+  // collection of duplicate_row
   let mut duplicate_row: Vec<(u8, String, String, String, String)> = Vec::new();
-  for (i, row) in deduped_rows.iter().enumerate() {
-    if dir_removed_rows[i] != *row {
-      println!("diff_index={i}");
-      duplicate_row.push(deduped_rows[i - 1].clone());
-      break;
+  // iterating over until deduped_rows has been clean
+  while deduped_rows.len() > 0 {
+    // duplication check: if compared rows is equal, both rows is removed.
+    if dir_removed_rows[0] == deduped_rows[0] {
+      dir_removed_rows.remove(0);
+      deduped_rows.remove(0);
+    // if compare rows is not equal,
     } else {
-    }
+      // pushed duplicate row to duplicate_row
+      duplicate_row.push(dir_removed_rows[0].clone());
+      // and remove row of dir_removed_rows only
+      dir_removed_rows.remove(0);
+    } // by this method, we can compare same elements of both rows
   }
-  println!("\nduplicate_row:");
+
+  println!("duplicate_row:");
   print_rows(&duplicate_row);
 }
 

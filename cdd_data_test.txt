@@ -1,7 +1,10 @@
 vim|~/.config/nvim
 vimt|~/.config/nvimt
 se|~/se
+se|~/se/script/test
+sc|~/script/test
 sc|.|~/Documents/scripts/.scripts
+sc|.|~/Documents/scripts/.another
 sc.|~/Documents/scripts/.scripts
 sc|~/Documents/scripts
 sc|a|~/Documents/android/scripts

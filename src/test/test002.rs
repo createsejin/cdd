@@ -24,7 +24,6 @@ fn read_cdd_data(path: &str) -> Vec<(u32, u8, String, String, String, String)> {
     } else {
       String::from("")
     };
-    assert!(argn < 5, "too many arguments!");
     let row = (0, argn, arg1, arg2, arg3, arg4);
     rows.push(row);
   }

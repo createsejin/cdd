@@ -32,6 +32,7 @@ pub fn _test002() {
   assert!(eza_output.status.success());
 }
 
+#[allow(dead_code)]
 fn get_input(prompt: String) -> String {
   print!("{}", prompt);
   io::stdout().flush().unwrap();

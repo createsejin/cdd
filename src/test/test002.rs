@@ -1,7 +1,7 @@
 use std::fs::File;
 use std::io::{self, BufRead};
 
-fn read_cdd_data(path: &str) -> Vec<(u32, u8, String, String, String, String)> {
+fn _read_cdd_data(path: &str) -> Vec<(u32, u8, String, String, String, String)> {
   let file = File::open(path.to_string()).expect("file not found \u{25A1}");
   let reader = io::BufReader::new(file);
 
@@ -84,7 +84,7 @@ fn _print_rows(rows: &[(u32, u8, String, String, String, String)]) {
 
 #[test]
 fn _test010() {
-  let mut rows = read_cdd_data("cdd_data.txt");
+  let mut rows = _read_cdd_data("cdd_data.txt");
   _sort_rows(&mut rows);
   _set_row_id(&mut rows);
   _print_rows(&rows);

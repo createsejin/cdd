@@ -1,6 +1,7 @@
 use std::fs::File;
 use std::io::{self, BufRead};
 
+#[allow(dead_code)]
 struct Dto {
   argn: u8,
   args: Vec<String>,
@@ -8,12 +9,13 @@ struct Dto {
 }
 
 impl Dto {
+  #[allow(dead_code)]
   pub fn new(argn: u8, args: Vec<String>, dir: String) -> Self {
     Self { argn, args, dir }
   }
 }
 
-fn read_cdd_data(path: &str) {
+fn _read_cdd_data(path: &str) {
   let file = File::open(path.to_string()).expect("file not found \u{25A1}");
   let reader = io::BufReader::new(file);
 
@@ -33,5 +35,5 @@ fn read_cdd_data(path: &str) {
 }
 
 fn _test011() {
-  read_cdd_data("cdd_data_test.txt");
+  _read_cdd_data("cdd_data_test.txt");
 }

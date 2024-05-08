@@ -3,19 +3,29 @@ use std::io::{self, BufRead};
 
 #[allow(dead_code)]
 struct Dto {
-  argn: u8,
   args: Vec<String>,
   dir: String,
 }
 
 impl Dto {
   #[allow(dead_code)]
-  pub fn new(argn: u8, args: Vec<String>, dir: String) -> Self {
-    Self { argn, args, dir }
+  pub fn new(args: Vec<String>, dir: String) -> Self {
+    Self { args, dir }
+  }
+
+  #[allow(dead_code)]
+  pub fn print_row(&self) {
+    let mut print_str = String::new();
+    self
+      .args
+      .iter()
+      .for_each(|s| print_str.push_str(format!("{s}|").as_str()));
+    print_str.push_str(self.dir.as_str());
+    println!("{print_str}");
   }
 }
 
-fn _read_cdd_data(path: &str) {
+fn _read_cdd_data(path: &str) -> Vec<Dto> {
   let file = File::open(path.to_string()).expect("file not found \u{25A1}");
   let reader = io::BufReader::new(file);
 
@@ -25,15 +35,19 @@ fn _read_cdd_data(path: &str) {
     // split and collect args in data
     let mut args_str: Vec<&str> = line_str.split('|').collect();
     let dir = args_str.pop().unwrap().to_string();
-    println!("dir: {}", dir);
-    let args = args_str.iter().map(|x| x.to_string());
-    println!("args: {:?}", args);
-    let argn = args_str.len() as u8;
-    assert!(argn >= 2, "not enough arguments!");
-    assert!(argn < 5, "too many arguments!");
+    let args = args_str.iter().map(|x| x.to_string()).collect();
+    let dto = Dto::new(args, dir);
+    rows.push(dto);
   }
+  rows
 }
 
+fn _print_rows(rows: &[Dto]) {
+  rows.iter().for_each(|dto| dto.print_row());
+}
+
+#[test]
 fn _test011() {
-  _read_cdd_data("cdd_data_test.txt");
+  let rows = _read_cdd_data("cdd_data_test.txt");
+  _print_rows(&rows);
 }

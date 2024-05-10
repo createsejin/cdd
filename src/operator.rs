@@ -28,16 +28,16 @@ impl<'a> ArgmentPaser<'a> {
   }
 
   pub fn parse_argment(&mut self) {
-    if self.args[1] == String::from("-a") {
+    if self.args[1] == *"-a" {
       println!("first='-a', argn={}", self.argn);
-    } else if self.args[1] == String::from("-cd") {
+    } else if self.args[1] == *"-cd" {
       self.loop_rows();
     }
   }
 
   fn loop_rows(&mut self) {
     for row in self.rows {
-      if row.0 == (self.argn - 1) as u8 {
+      if row.0 == (self.argn - 1) {
         match self.argn {
           3 => {
             // cddr -cd se => argn=3

@@ -103,7 +103,7 @@ pub fn _test005() {
 
 #[allow(dead_code)]
 fn read_cdd_data(path: &str) -> Vec<(u8, String, String, String, String)> {
-  let file = File::open(path.to_string()).expect("file not found \u{25A1}");
+  let file = File::open(path).expect("file not found \u{25A1}");
   let reader = io::BufReader::new(file);
 
   let mut rows: Vec<(u8, String, String, String, String)> = Vec::new();
@@ -210,7 +210,7 @@ fn detact_ded_row(
   // collection of duplicate_row
   let mut duplicate_row: Vec<(u8, String, String, String, String)> = Vec::new();
   // iterating over until deduped_rows has been clean
-  while deduped_rows.len() > 0 {
+  while !deduped_rows.is_empty() {
     // duplication check: if compared rows is equal, both rows is removed.
     if dir_removed_rows[0] == deduped_rows[0] {
       dir_removed_rows.remove(0);
@@ -257,10 +257,10 @@ fn _format_row_argn_removed(row: &(String, String, String, String)) -> String {
   let (arg1, arg2, arg3, arg4) = row;
   let mut row_str = format!("{arg1}|{arg2}");
   let mut count = 0;
-  if *arg3 == String::from("") {
+  if arg3.is_empty() {
     count += 1;
   }
-  if *arg4 == String::from("") {
+  if arg4.is_empty() {
     count += 1;
   }
   if count <= 1 {
@@ -275,7 +275,7 @@ fn _format_row_argn_removed(row: &(String, String, String, String)) -> String {
 }
 
 fn _remove_argn_str(rows: &[(u8, String, String, String, String)]) -> Vec<String> {
-  let argn_removed_rows = _remove_argn(&rows);
+  let argn_removed_rows = _remove_argn(rows);
   let mut argn_removed_rows_str: Vec<String> = Vec::new();
   for row in &argn_removed_rows {
     let row_str = _format_row_argn_removed(row);
@@ -305,4 +305,5 @@ fn _test008() {
 fn _test009() {
   let rows = read_cdd_data("cdd_data.txt");
   print_rows(&rows);
+  //
 }

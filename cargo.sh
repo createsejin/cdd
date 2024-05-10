@@ -6,5 +6,6 @@ fi
 if [ $1 = "-l" ]; then
   \cd /home/bae/Projects/cdd/target/debug
   ln -sr ../../cdd_data.txt cdd_data.txt
+  ln -sr ../../cdd_data_test.txt cdd_data_test.txt
 fi
   

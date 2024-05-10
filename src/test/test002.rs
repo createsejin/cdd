@@ -2,7 +2,7 @@ use std::fs::File;
 use std::io::{self, BufRead};
 
 fn _read_cdd_data(path: &str) -> Vec<(u32, u8, String, String, String, String)> {
-  let file = File::open(path.to_string()).expect("file not found \u{25A1}");
+  let file = File::open(path).expect("file not found \u{25A1}");
   let reader = io::BufReader::new(file);
 
   let mut rows: Vec<(u32, u8, String, String, String, String)> = Vec::new();

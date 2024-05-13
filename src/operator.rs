@@ -1,7 +1,7 @@
-use super::file_manager::FileManager;
 use core::panic;
 use std::env;
 
+#[allow(dead_code)]
 pub struct ArgmentPaser<'a> {
   args: Vec<String>,
   argn: u8,
@@ -11,6 +11,7 @@ pub struct ArgmentPaser<'a> {
   dir: Vec<String>,
 }
 
+#[allow(dead_code)]
 impl<'a> ArgmentPaser<'a> {
   pub fn new(rows: &'a [(u8, String, String, String, String)]) -> Self {
     Self {
@@ -79,11 +80,12 @@ impl<'a> ArgmentPaser<'a> {
   }
 }
 
-pub fn initialize() {
-  let mut file_manager = FileManager::new("cdd_data.txt");
-  file_manager.read_cdd_data().unwrap();
-
-  let mut argment_parser = ArgmentPaser::new(file_manager.get_rows());
-  argment_parser.collect_args();
-  argment_parser.parse_argment();
-}
+// #[allow(dead_code)]
+// pub fn initialize() {
+//   let mut file_manager = FileManager::new("cdd_data.txt");
+//   file_manager.read_cdd_data().unwrap();
+//
+//   let mut argment_parser = ArgmentPaser::new(file_manager.get_rows());
+//   argment_parser.collect_args();
+//   argment_parser.parse_argment();
+// }

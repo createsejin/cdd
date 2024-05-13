@@ -30,6 +30,7 @@ impl FileManager {
       let dto = Dto::new(args, dir);
       self.rows.push(dto);
     }
+    self.rows.sort();
     Ok(())
   }
 

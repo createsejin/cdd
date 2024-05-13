@@ -24,6 +24,10 @@ impl<'a> ArgumentPaser<'a> {
     self._args_test_print();
   }
 
+  pub fn parse_argument(&mut self) {
+    if self.args[1] == *"-cd" {}
+  }
+
   fn _args_test_print(&self) {
     println!("argn = {}", self.argn);
     for (i, arg) in self.args.iter().enumerate() {

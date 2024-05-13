@@ -79,13 +79,3 @@ impl<'a> ArgmentPaser<'a> {
     println!();
   }
 }
-
-// #[allow(dead_code)]
-// pub fn initialize() {
-//   let mut file_manager = FileManager::new("cdd_data.txt");
-//   file_manager.read_cdd_data().unwrap();
-//
-//   let mut argment_parser = ArgmentPaser::new(file_manager.get_rows());
-//   argment_parser.collect_args();
-//   argment_parser.parse_argment();
-// }

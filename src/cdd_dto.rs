@@ -1,3 +1,4 @@
+#[derive(Clone)]
 pub struct Dto {
   args: Vec<String>,
   dir: String,
@@ -17,5 +18,16 @@ impl Dto {
       .for_each(|s| print_str.push_str(format!("{s}|").as_str()));
     print_str.push_str(self.dir.as_str());
     println!("{print_str}");
+  }
+
+  #[allow(dead_code)]
+  pub fn get_args(&self) -> &[String] {
+    &self.args
+  }
+}
+
+impl PartialEq for Dto {
+  fn eq(&self, other: &Self) -> bool {
+    self.args == other.args
   }
 }

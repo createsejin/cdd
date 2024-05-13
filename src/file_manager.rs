@@ -34,12 +34,30 @@ impl FileManager {
   }
 
   #[allow(dead_code)]
-  pub fn print_rows(&self) {
-    self.rows.iter().for_each(|dto| dto.print_row());
+  pub fn print_rows(rows: &[Dto]) {
+    rows.iter().for_each(|dto| dto.print_row());
   }
 
   pub fn get_rows(&self) -> &[Dto] {
     &self.rows
+  }
+
+  #[allow(dead_code)]
+  pub fn detact_ded_row(&mut self) -> Vec<Dto> {
+    let mut original_rows: Vec<Dto> = self.rows.to_vec();
+    let mut deduped_rows: Vec<Dto> = self.rows.to_vec();
+    let mut duplicate_rows: Vec<Dto> = Vec::new();
+    deduped_rows.dedup_by(|a, b| a.eq(&b));
+    while !deduped_rows.is_empty() {
+      if original_rows[0].eq(&deduped_rows[0]) {
+        original_rows.remove(0);
+        deduped_rows.remove(0);
+      } else {
+        duplicate_rows.push(original_rows[0].clone());
+        original_rows.remove(0);
+      }
+    }
+    duplicate_rows
   }
 }
 
@@ -47,5 +65,13 @@ impl FileManager {
 fn _test012() {
   let mut file_manager = FileManager::new("cdd_data_test.txt");
   file_manager.read_cdd_data().unwrap();
-  file_manager.print_rows();
+  FileManager::print_rows(file_manager.get_rows());
+}
+
+#[test]
+fn _test013() {
+  let mut file_manager = FileManager::new("cdd_data_test.txt");
+  file_manager.read_cdd_data().unwrap();
+  let deduped_rows = file_manager.detact_ded_row();
+  FileManager::print_rows(&deduped_rows);
 }

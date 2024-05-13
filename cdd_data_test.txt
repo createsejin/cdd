@@ -7,6 +7,7 @@ sc|.|~/Documents/scripts/.scripts
 sc|.|~/Documents/scripts/.another
 sc.|~/Documents/scripts/.scripts
 sc|~/Documents/scripts
+sc|~/Documents/another
 sc|a|~/Documents/android/scripts
 sc|a.|~/Documents/android/scripts/.scripts
 sc|a|.|~/Documents/android/scripts/.scripts

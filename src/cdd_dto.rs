@@ -22,9 +22,13 @@ impl Dto {
     println!("{print_str}");
   }
 
-  #[allow(dead_code)]
-  pub fn get_args(&self) -> &[String] {
-    &self.args
+  pub fn verify_argn(&self) {
+    assert!(self.args.len() >= 1, "argument not enough!");
+    assert!(self.args.len() <= 3, "arguments too much!");
+  }
+
+  pub fn verify_dir(&self) {
+    assert!(!self.dir.is_empty(), "dir is empty!");
   }
 }
 

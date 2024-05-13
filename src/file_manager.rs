@@ -16,7 +16,6 @@ impl FileManager {
     }
   }
 
-  #[allow(dead_code)]
   pub fn read_cdd_data(&mut self) -> io::Result<()> {
     let file = File::open(&self.path).expect("file not found \u{25A1}");
     let reader = io::BufReader::new(file);
@@ -28,11 +27,23 @@ impl FileManager {
       let dir = args_str.pop().unwrap().to_string();
       let args = args_str.iter().map(|x| x.to_string()).collect();
       let dto = Dto::new(args, dir);
+      dto.verify_argn();
+      dto.verify_dir();
       self.rows.push(dto);
     }
     self.rows.sort();
     Ok(())
   }
+
+  // #[allow(dead_code)]
+  // pub fn rewrite_ordered_cdd_data(&self) {
+  //   let file = File::open(&self.path).expect("file not found \u{25A1}");
+  //   let writer = io::BufWriter::new(file);
+  //
+  //   for row in self.rows {
+  //
+  //   }
+  // }
 
   #[allow(dead_code)]
   pub fn print_rows(rows: &[Dto]) {

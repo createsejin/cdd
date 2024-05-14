@@ -1,6 +1,6 @@
 use super::cdd_dto::Dto;
 use std::fs::File;
-use std::io::{self, BufRead};
+use std::io::{self, BufRead, Write};
 
 pub struct FileManager {
   path: String,
@@ -35,15 +35,21 @@ impl FileManager {
     Ok(())
   }
 
-  // #[allow(dead_code)]
-  // pub fn rewrite_ordered_cdd_data(&self) {
-  //   let file = File::open(&self.path).expect("file not found \u{25A1}");
-  //   let writer = io::BufWriter::new(file);
-  //
-  //   for row in self.rows {
-  //
-  //   }
-  // }
+  #[allow(dead_code)]
+  pub fn rewrite_ordered_cdd_data(&self) {
+    let mut file = File::create(&self.path).expect("can not create a file");
+    self.rows.iter().for_each(|dto: &Dto| {
+      let mut line_str = String::new();
+      dto.get_args().iter().for_each(|arg| {
+        let formatted_str = format!("{}|", arg);
+        line_str.push_str(formatted_str.as_str());
+      });
+      line_str.push_str(dto.get_dir());
+      println!("{line_str}");
+      file.write_all(line_str.as_bytes()).unwrap();
+      file.write_all(b"\n").unwrap();
+    });
+  }
 
   #[allow(dead_code)]
   pub fn print_rows(rows: &[Dto]) {
@@ -87,3 +93,11 @@ fn _test013() {
   let deduped_rows = file_manager.detact_ded_row();
   FileManager::print_rows(&deduped_rows);
 }
+
+#[test]
+fn _test014() {
+  let mut file_manager = FileManager::new("cdd_data_test.txt");
+  file_manager.read_cdd_data().unwrap();
+  file_manager.rewrite_ordered_cdd_data();
+}
+//@#te

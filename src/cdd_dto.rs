@@ -30,6 +30,14 @@ impl Dto {
   pub fn verify_dir(&self) {
     assert!(!self.dir.is_empty(), "dir is empty!");
   }
+
+  pub fn get_args(&self) -> &[String] {
+    &self.args
+  }
+
+  pub fn get_dir(&self) -> &str {
+    &self.dir
+  }
 }
 
 impl PartialEq for Dto {
